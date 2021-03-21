@@ -1,6 +1,7 @@
 """Server for HeartMovies"""
 
 from flask import Flask, jsonify, render_template, request, flash, session, redirect
+from model import connect_to_db
 from jinja2 import StrictUndefined
 
 
@@ -17,5 +18,5 @@ def display_homepage():
 
 
 if __name__ == '__main__':
-    
+    connect_to_db(app)
     app.run(host='0.0.0.0', port='5000', debug=True)
