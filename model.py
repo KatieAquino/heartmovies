@@ -64,6 +64,12 @@ class FavoriteMovie(db.Model):
     movie = db.relationship('Movie', backref='movies')
 
 
+    def __repr__(self):
+        """Cleaner represenation of a favorite for ease of use."""
+
+        return f'<FavoriteMovie id={self.id}, user={sel
+f.user.username}, movie={self.movie.title}>'
+
 def connect_to_db(flask_app, db_uri='postgresql:///testdb', echo=True):
     """Connects app to database."""
 
