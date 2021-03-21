@@ -2,9 +2,8 @@
 
 import os
 import json
-from random import choice, randint
+from random import choice
 
-from model import connect_to_db
 from crud import *
 import server
 
@@ -14,6 +13,8 @@ os.system('createdb testdb')
 connect_to_db(server.app)
 db.create_all()
 
+
+# seeds database with users
 mickey_mouse = create_user( username = 'mickeymouse',
                             email = 'mmouse@test.com',
                             password = '123password')
@@ -39,7 +40,39 @@ capt_janeway = create_user( username = 'capt_janeway',
                             password = 'coffee'
                             )
 
-db_users = [mickey_mouse, minnie_mouse, donald_duck, daisy_duck,]
+users_in_db = [mickey_mouse, minnie_mouse, donald_duck, daisy_duck, capt_janeway]
 
-for user in db_users:
-    db.session.add(user)
+print('*' * 50)
+print('Users successfully added!')
+print('*' * 50)
+
+
+# seeds database with a several movies
+with open('data/movies.json') as o:
+    movie_data = json.loads(o.read())
+
+movies_in_db = []
+
+for movie in movie_data:
+    title = (movie['title'])
+    poster = (movie['poster'])
+    plot = (movie['plot'])
+
+    movie = create_movie(title, poster, plot)
+
+    movies_in_db.append(movie)
+
+print('*' * 50)
+print('Movies successfully added!')
+print('*' * 50)
+
+
+# seeds database with a few favorite movies for different users
+for user in users_in_db:
+    for i in range(4):
+        fav_movie = choice(movies_in_db)
+        create_favorite_movie(user.id, fav_movie.id)
+
+print('*' * 50)
+print('Favorites successfully added!')
+print('*' * 50)
